@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="l1.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limitto, currency, length</title>
+</head>
+
+<body>
+    <div ng-app="" ng-controller="tablePrinter">
+        <p>Items in cart: {{items.length}}</p>
+        Limit: <input type="number" ng-model="limit">
+        Name: <select ng-model="nameFilter" ng-options="i.name for i in items"></select>
+        Category: <select ng-model="categoryFilter" ng-options="i for i in categories"></select>
+        <table>
+            <tr>
+                <th ng-click="orderByField('name')">Name</th>
+                <th ng-click="orderByField('price')">Price</th>
+                <th ng-click="orderByField('category')">Category</th>
+                <th ng-click="orderByField('count')">Count</th>
+            </tr>
+            <tr ng-repeat="item in items 
+                | filter:categoryPredicate(categoryFilter) 
+                | filter:namePredicate(nameFilter) 
+                | limitTo:limit 
+                | orderBy:orderByFieldNames">
+                <td>{{item.name}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.category}}</td>
+                <td>{{item.count}}</td>
+            </tr>
+        </table>
+
+        <br><br>
+
+        City: <select ng-model="selectedCity" ng-options="c.city for c in cities"></select>
+        <p>Country : {{selectedCity.country ? selectedCity.country : 'Неизвестно'}}</p>
+
+        <br><br>
+        
+        <button type="button" ng-click="change()">change</button>
+        <input type="text" id="change" value="---" disabled>
+    </div>
+</body>
+
+</html>
